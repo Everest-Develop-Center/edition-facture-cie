@@ -1,6 +1,7 @@
 from playwright.async_api import async_playwright
 from fastapi import Depends, HTTPException, Request, status
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
+from utilities import constants as c
 
 async def convert_html_to_pdf(html_filepath: str, output_filename: str):
     async with async_playwright() as p:
@@ -26,5 +27,5 @@ security = HTTPBearer()
 def token_checking(credentials: HTTPAuthorizationCredentials = Depends(security)):
     token = credentials.credentials
     print("token used", token)
-    if token not in AUTHORIZED_TOKENS:
+    if token not in c.AUTHORIZED_TOKENS:
         raise HTTPException(status_code=401, detail="Invalid token")
